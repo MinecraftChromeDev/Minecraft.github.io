@@ -1,9 +1,13 @@
 <!-- the canvas *must not* have any border or padding, or mouse coords will be wrong -->
-<canvas id="canvas" style="display:block; border:0; padding:0; background-color: black;" 
-		oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+<canvas
+  id="canvas"
+  style="display: block; border: 0; padding: 0; background-color: black"
+  oncontextmenu="event.preventDefault()"
+  tabindex="-1"
+></canvas>
 <span id="logmsg"></span>
 
-<script type='text/javascript'>
+<script type="text/javascript">
   var Module = {
     preRun: [],
     postRun: [],

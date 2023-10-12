@@ -13,8 +13,8 @@
  *
  * Copyright (c) 2008-2011, Ryan McGeary (ryanonjavascript -[at]- mcgeary [*dot*] org)
  */
-(function($) {
-  $.timeago = function(timestamp) {
+(function ($) {
+  $.timeago = function (timestamp) {
     if (timestamp instanceof Date) {
       return inWords(timestamp);
     } else if (typeof timestamp === "string") {
@@ -45,10 +45,10 @@
         months: "%d months",
         year: "about a year",
         years: "%d years",
-        numbers: []
-      }
+        numbers: [],
+      },
     },
-    inWords: function(distanceMillis) {
+    inWords: function (distanceMillis) {
       var $l = this.settings.strings;
       var prefix = $l.prefixAgo;
       var suffix = $l.suffixAgo;
@@ -67,48 +67,53 @@
       var years = days / 365;
 
       function substitute(stringOrFunction, number) {
-        var string = $.isFunction(stringOrFunction) ? stringOrFunction(number, distanceMillis) : stringOrFunction;
+        var string = $.isFunction(stringOrFunction)
+          ? stringOrFunction(number, distanceMillis)
+          : stringOrFunction;
         var value = ($l.numbers && $l.numbers[number]) || number;
         return string.replace(/%d/i, value);
       }
 
-      var words = seconds < 45 && substitute($l.seconds, Math.round(seconds)) ||
-        seconds < 90 && substitute($l.minute, 1) ||
-        minutes < 45 && substitute($l.minutes, Math.round(minutes)) ||
-        minutes < 90 && substitute($l.hour, 1) ||
-        hours < 24 && substitute($l.hours, Math.round(hours)) ||
-        hours < 48 && substitute($l.day, 1) ||
-        days < 30 && substitute($l.days, Math.floor(days)) ||
-        days < 60 && substitute($l.month, 1) ||
-        days < 365 && substitute($l.months, Math.floor(days / 30)) ||
-        years < 2 && substitute($l.year, 1) ||
+      var words =
+        (seconds < 45 && substitute($l.seconds, Math.round(seconds))) ||
+        (seconds < 90 && substitute($l.minute, 1)) ||
+        (minutes < 45 && substitute($l.minutes, Math.round(minutes))) ||
+        (minutes < 90 && substitute($l.hour, 1)) ||
+        (hours < 24 && substitute($l.hours, Math.round(hours))) ||
+        (hours < 48 && substitute($l.day, 1)) ||
+        (days < 30 && substitute($l.days, Math.floor(days))) ||
+        (days < 60 && substitute($l.month, 1)) ||
+        (days < 365 && substitute($l.months, Math.floor(days / 30))) ||
+        (years < 2 && substitute($l.year, 1)) ||
         substitute($l.years, Math.floor(years));
 
       return $.trim([prefix, words, suffix].join(" "));
     },
-    parse: function(iso8601) {
+    parse: function (iso8601) {
       var s = $.trim(iso8601);
-      s = s.replace(/\.\d\d\d+/,""); // remove milliseconds
-      s = s.replace(/-/,"/").replace(/-/,"/");
-      s = s.replace(/T/," ").replace(/Z/," UTC");
-      s = s.replace(/([\+\-]\d\d)\:?(\d\d)/," $1$2"); // -04:00 -> -0400
+      s = s.replace(/\.\d\d\d+/, ""); // remove milliseconds
+      s = s.replace(/-/, "/").replace(/-/, "/");
+      s = s.replace(/T/, " ").replace(/Z/, " UTC");
+      s = s.replace(/([\+\-]\d\d)\:?(\d\d)/, " $1$2"); // -04:00 -> -0400
       return new Date(s);
     },
-    datetime: function(elem) {
+    datetime: function (elem) {
       // jQuery's `is()` doesn't play well with HTML5 in IE
       var isTime = $(elem).get(0).tagName.toLowerCase() === "time"; // $(elem).is("time");
       var iso8601 = isTime ? $(elem).attr("datetime") : $(elem).attr("title");
       return $t.parse(iso8601);
-    }
+    },
   });
 
-  $.fn.timeago = function() {
+  $.fn.timeago = function () {
     var self = this;
     self.each(refresh);
 
     var $s = $t.settings;
     if ($s.refreshMillis > 0) {
-      setInterval(function() { self.each(refresh); }, $s.refreshMillis);
+      setInterval(function () {
+        self.each(refresh);
+      }, $s.refreshMillis);
     }
     return self;
   };
@@ -138,13 +143,13 @@
   }
 
   function distance(date) {
-    return (new Date().getTime() - date.getTime());
+    return new Date().getTime() - date.getTime();
   }
 
   // fix for IE6 suckage
   document.createElement("abbr");
   document.createElement("time");
-}(jQuery));
+})(jQuery);
 
 /*
      FILE ARCHIVED ON 20:48:21 Sep 30, 2011 AND RETRIEVED FROM THE
